@@ -1,10 +1,11 @@
-import pymysql
 import time
 
 from entity.User import User
+from mapper.dbUtil import dbUtil
 
-conn = pymysql.connect(host="127.0.0.1", port=3306, user='root', passwd='Inaba', db='Kuko', charset='utf8mb4')
-cursor = conn.cursor(pymysql.cursors.DictCursor)
+dbUtil = dbUtil()
+conn = dbUtil.getConnect()
+cursor = dbUtil.getCursor()
 
 def addUser(userName, password, phone):
     sql = "insert into user (userName, password, phone, creationDate) values (%s, %s ,%s, %s);"

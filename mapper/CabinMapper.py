@@ -1,7 +1,8 @@
-import pymysql
+from mapper.dbUtil import dbUtil
 
-conn = pymysql.connect(host="127.0.0.1", port=3306, user='root', passwd='Inaba', db='Kuko', charset='utf8mb4')
-cursor = conn.cursor(pymysql.cursors.DictCursor)
+dbUtil = dbUtil()
+conn = dbUtil.getConnect()
+cursor = dbUtil.getCursor()
 
 def addCabin(fid, flightDate, grade, seats, availableSeats, fullPrice):
     sql = "insert into cabin (fid, flightDate, grade, seats, availableSeats, fullPrice) values (%s, %s, %s, %s, %s, %s);"

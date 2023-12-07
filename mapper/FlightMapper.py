@@ -1,14 +1,22 @@
-import pymysql
+from entity.Flight import Flight
+from mapper.dbUtil import dbUtil
 
-conn = pymysql.connect(host="127.0.0.1", port=3306, user='root', passwd='Inaba', db='Kuko', charset='utf8mb4')
-cursor = conn.cursor(pymysql.cursors.DictCursor)
+dbUtil = dbUtil()
+conn = dbUtil.getConnect()
+cursor = dbUtil.getCursor()
 
 def getFlight():
     sql = "select * from flight;"
     cursor.execute(sql)
-    return cursor.fetchall()
+    resultSet = cursor.fetchall()
+    if len(resultSet) > 0:
+        flightList = list()
+        for flight in resultSet:
+            flightList.append(Flight(flight["fid"], flight["flightNumber"], flight["model"], flight["fromCity"], flight["toCity"], flight["mileAge"], flight["departureTime"]))
+        return flightList
+    return None
 
-def addFight(flightNumber, model, fromCity, toCity, mileAge, departureTime):
+def addFlight(flightNumber, model, fromCity, toCity, mileAge, departureTime):
     sql = "insert into flight (flightNumber, model, fromCity, toCity, mileAge, departureTime) values (%s, %s, %s, %s, %s, %s);"
     curs = conn.cursor()
     curs.execute(sql,(flightNumber, model, fromCity, toCity, mileAge, departureTime))
@@ -55,5 +63,3 @@ def updataFightByFid(fid, flightNumber, model, fromCity, toCity, mileAge, depart
 def allClose():
     cursor.close()
     conn.close()
-
-deleteFlightByFid(6)

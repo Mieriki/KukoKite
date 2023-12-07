@@ -1,9 +1,9 @@
-import pymysql
-
 from entity.Admin import Admin
+from mapper.dbUtil import dbUtil
 
-conn = pymysql.connect(host="127.0.0.1", port=3306, user='root', passwd='Inaba', db='Kuko', charset='utf8mb4')
-cursor = conn.cursor(pymysql.cursors.DictCursor)
+dbUtil = dbUtil()
+conn = dbUtil.getConnect()
+cursor = dbUtil.getCursor()
 
 def addAdmin(userName, password, permissionLevel):
     sql = "insert into admin (userName, password, permissionLevel) values (%s, %s, %s);"
@@ -20,7 +20,6 @@ def getAdminByUserNameAndPassword(userName, password):
         resultMap = resultSet[0]
         return Admin(resultMap["aid"], resultMap["userName"], resultMap["password"], resultMap["permissionLevel"])
     return None
-
 
 def updataAdminByAid(aid, userName, password, permissionLevel):
     sql = "update admin set "

@@ -1,8 +1,10 @@
-import pymysql
 import time
 
-conn = pymysql.connect(host="127.0.0.1", port=3306, user='root', passwd='Inaba', db='Kuko', charset='utf8mb4')
-cursor = conn.cursor(pymysql.cursors.DictCursor)
+from mapper.dbUtil import dbUtil
+
+dbUtil = dbUtil()
+conn = dbUtil.getConnect()
+cursor = dbUtil.getCursor()
 
 def addCabin(uid, fid, cid, isPayment):
     sql = "insert into ticket (uid, fid, cid, bayTime, isPayment) values (%s, %s, %s, %s, %s);"
