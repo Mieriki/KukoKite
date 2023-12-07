@@ -17,8 +17,8 @@ def getFlight(flightNumber, fromCity, toCity):
     if toCity != None:
         sql += " and toCity like CONCAT('%%', %s, '%%')"
         params.append(toCity)
-    cursor.execute(sql, params)
     sql += ";"
+    cursor.execute(sql, params)
     resultSet = cursor.fetchall()
     if len(resultSet) > 0:
         flightList = list()
