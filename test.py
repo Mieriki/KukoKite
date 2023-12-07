@@ -1,6 +1,4 @@
 import PySimpleGUI as psg
-
-import PySimpleGUI as psg
 layout = [[psg.Text(text='Hello World',
    font=('Arial Bold', 20),
    size=20,

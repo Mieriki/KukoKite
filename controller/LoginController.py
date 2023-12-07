@@ -1,7 +1,15 @@
 import PySimpleGUI as sg
 
 # from Servlet import UserServlet
+'''
+用户登录
+servlet.userServlet.login(userNmae, password)
+返回值 -> User: 成功 -> 跳转UserController页面
+         None: 失败 -> 重新输入
 
+
+点击注册 -> 跳转registerController.py
+'''
 
 # 初始化登录窗体
 def login_init():

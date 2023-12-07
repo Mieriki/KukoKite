@@ -5,9 +5,20 @@ dbUtil = dbUtil()
 conn = dbUtil.getConnect()
 cursor = dbUtil.getCursor()
 
-def getFlight():
-    sql = "select * from flight;"
-    cursor.execute(sql)
+def getFlight(flightNumber, fromCity, toCity):
+    sql = "select * from flight where 1 "
+    params = list()
+    if flightNumber != None:
+        sql += " and flightNumber like CONCAT('%%', %s, '%%')"
+        params.append(flightNumber)
+    if fromCity != None:
+        sql += " and fromCity like CONCAT('%%', %s, '%%')"
+        params.append(fromCity)
+    if toCity != None:
+        sql += " and toCity like CONCAT('%%', %s, '%%')"
+        params.append(toCity)
+    cursor.execute(sql, params)
+    sql += ";"
     resultSet = cursor.fetchall()
     if len(resultSet) > 0:
         flightList = list()
