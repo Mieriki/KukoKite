@@ -1,6 +1,5 @@
 import PySimpleGUI as sg
 
-# from Servlet import UserServlet
 '''
 用户登录
 servlet.userServlet.login(userNmae, password)
