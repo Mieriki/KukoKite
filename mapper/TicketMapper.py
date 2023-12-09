@@ -1,12 +1,15 @@
 import time
 
+from entity.Cabin import Cabin
+from entity.Flight import Flight
+from entity.Ticket import Ticket
 from mapper.dbUtil import dbUtil
 
 dbUtil = dbUtil()
 conn = dbUtil.getConnect()
 cursor = dbUtil.getCursor()
 
-def addCabin(uid, fid, cid, isPayment):
+def addTicket(uid, fid, cid, isPayment):
     sql = "insert into ticket (uid, fid, cid, bayTime, isPayment) values (%s, %s, %s, %s, %s);"
     curs = conn.cursor()
     bayTime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
@@ -28,15 +31,23 @@ def getTicketByUid(uid, fid, cid, isPayment, fromCity, toCity):
         sql += " and t.isPayment = %s"
         params.append(isPayment)
     if fromCity != None:
-        sql += " and f.fromCity = %s"
+        sql += " and f.fromCity like CONCAT('%%', %s, '%%')"
         params.append(fromCity)
     if toCity != None:
-        sql += " and f.toCity = %s"
+        sql += " and f.toCity like CONCAT('%%', %s, '%%')"
         params.append(toCity)
     sql += ";"
 
     cursor.execute(sql, params)
-    return cursor.fetchall()
+    resultSet = cursor.fetchall()
+    ticketList = list()
+    if len(resultSet) >0:
+        for resultMap in resultSet:
+            flight = Flight(resultMap["fid"], resultMap["flightNumber"], resultMap["model"], resultMap["fromCity"], resultMap["toCity"], resultMap["mileAge"], resultMap["departureTime"])
+            cabin = Cabin(resultMap["cid"], flight, resultMap["flightDate"], resultMap["grade"], resultMap["seats"], resultMap["availableSeats"], resultMap["fullPrice"])
+            ticketList.append(Ticket(resultMap["tid"], resultMap["uid"], cabin, resultMap["bayTime"], resultMap["isPayment"]))
+        return ticketList
+    return None
 
 def deleteTicKetByTid(tid):
     sql = "delete from ticket where tid = %s;"
