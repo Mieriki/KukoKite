@@ -13,7 +13,7 @@ class dbUtil:
         self.db = conf["pdbc"]["db"]
         self.charset = conf["pdbc"]["charset"]
 
-        self.conn = pymysql.connect(host="127.0.0.1", port=3306, user='root', passwd='Inaba', db='Kuko', charset='utf8mb4')
+        self.conn = pymysql.connect(host=self.host, port=int(self.port), user=self.user, passwd=self.passwd, db=self.db, charset=self.charset)
 
     def getConnect(self):
         return self.conn
